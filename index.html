@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixi</title>
+  <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+<body>
+  <!-- npx http-server -->
+  <script>
+    let app = new PIXI.Application({ width: document.documentElement.clientWidth, height: document.documentElement.clientHeight });
+    document.body.appendChild(app.view);
+
+    const container = new PIXI.Container();
+    container.x = app.screen.width / 2;
+    container.y = app.screen.height / 2;
+    app.stage.addChild(container);
+
+    const ship = PIXI.Sprite.from('sample.png');
+    ship.anchor.set(0.5);
+    container.addChild(ship);
+
+    const torchLeft = PIXI.Sprite.from('rocket-fire.png');
+    torchLeft.scale.set(.1);
+    torchLeft.anchor.set(0.5, 0);
+    torchLeft.position.x = -28;
+    torchLeft.position.y = 74;
+    torchLeft.visible = false;
+    ship.addChild(torchLeft);
+
+    const torchRight = PIXI.Sprite.from('rocket-fire.png');
+    torchRight.scale.set(.1);
+    torchLeft.anchor.set(0.5, 0);
+    torchRight.position.x = -74;
+    torchRight.position.y = 74;
+    torchRight.visible = false;
+    ship.addChild(torchRight);
+
+    app.ticker.add(() => {
+      let random = Math.random();
+      torchLeft.alpha = random * (1 - .5) + .5;
+      torchRight.alpha = random * (1 - .5) + .5;
+    });
+
+    document.addEventListener('keydown', (e) => {
+      switch (e.code) {
+
+        case 'KeyA': 
+          container.rotation -= .07;
+          break;
+
+        case 'KeyD': 
+          container.rotation += .07;
+          break;
+
+        case 'KeyW': 
+          torchLeft.visible = true;
+          torchRight.visible = true;
+          break;
+
+        case 'KeyS': 
+          torchLeft.visible = false;
+          torchRight.visible = false;
+          break;
+      };
+    });
+  </script>
+</body>
+</html>
